@@ -74,7 +74,7 @@ export default function RolesTableSection() {
   return (
     <section className="flex flex-col gap-6">
       {/* Section header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex sm:w-full w-[50%] sm:items-center flex-col sm:flex-row justify-between gap-4">
         <h2 className="text-lg font-medium text-gray-900 leading-[1.56]">User Roles</h2>
         <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 shadow-[0_1px_2px_0_rgba(16,24,40,0.05)] hover:bg-gray-50 transition-colors shrink-0">
           <DownloadCloud size={20} className="text-gray-700" strokeWidth={1.67} />

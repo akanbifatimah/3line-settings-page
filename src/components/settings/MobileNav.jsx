@@ -37,7 +37,9 @@ export default function MobileNav() {
       {open && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
-          <aside className="relative z-10 w-70 bg-white flex flex-col justify-between min-h-screen pt-8 pb-8">
+
+          <aside className="relative z-10 w-70 bg-white flex flex-col h-screen overflow-y-auto">
+            {/* Close button */}
             <button
               onClick={() => setOpen(false)}
               className="absolute top-4 right-4 p-2 rounded-md hover:bg-gray-50 transition-colors"
@@ -45,7 +47,8 @@ export default function MobileNav() {
               <X size={20} className="text-gray-500" />
             </button>
 
-            <div className="flex flex-col gap-6">
+            {/* Top: logo + search + nav */}
+            <div className="flex flex-col gap-6 pt-8">
               {/* Logo */}
               <div className="px-5">
                 <div className="flex items-center gap-2">
@@ -93,10 +96,33 @@ export default function MobileNav() {
               </nav>
             </div>
 
-            {/* Account footer */}
-            <div className="px-6">
-              <div className="h-px bg-gray-200 mb-4" />
-              <div className="flex items-center justify-between">
+            {/* Bottom: featured card + divider + account */}
+            <div className="flex flex-col gap-6 px-4 pb-8 mt-auto pt-6">
+              {/* Featured card */}
+              <div className="bg-gray-50 rounded-md p-5 flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm font-medium text-gray-900">New features available!</p>
+                  <p className="text-sm text-gray-500">
+                    Check out the new dashboard view. Pages now load faster.
+                  </p>
+                </div>
+                <div className="bg-purple-100 h-34 rounded-sm overflow-hidden">
+                  <img src="/3line-woman.svg" alt="" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex gap-3">
+                  <button className="text-sm font-medium text-gray-500 transition-colors hover:text-gray-700">
+                    Dismiss
+                  </button>
+                  <button className="text-sm font-medium text-purple-600 transition-colors hover:text-purple-700">
+                    What&apos;s new?
+                  </button>
+                </div>
+              </div>
+
+              <div className="h-px bg-gray-200" />
+
+              {/* Account */}
+              <div className="flex items-center justify-between px-2">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-purple-300 flex items-center justify-center text-purple-500 font-semibold text-sm shrink-0">
                     OR
