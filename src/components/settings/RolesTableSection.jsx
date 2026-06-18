@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { DownloadCloud, Check, ChevronDown } from 'lucide-react'
-import { rolesTableData } from '@/data/roles'
+import { DownloadCloud, Check, ChevronDown, AlertCircle } from 'lucide-react'
+import { useRoles } from '@/hooks/useRoles'
 
 function StatusBadge({ status }) {
   const isActive = status === 'Active'
@@ -57,9 +57,43 @@ function AvatarGroup({ count = 6 }) {
   )
 }
 
+function SkeletonRow() {
+  return (
+    <>
+      <tr>
+        <td colSpan={6} className="p-0"><div className="h-px bg-gray-200" /></td>
+      </tr>
+      <tr>
+        <td className="px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-5 h-5 rounded-md bg-gray-200 animate-pulse shrink-0" />
+            <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+          </div>
+        </td>
+        <td className="px-6 py-4 border-l border-gray-200">
+          <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
+        </td>
+        <td className="px-6 py-4">
+          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+        </td>
+        <td className="px-6 py-4">
+          <div className="h-5 w-16 bg-gray-200 rounded-lg animate-pulse" />
+        </td>
+        <td className="px-6 py-3.5">
+          <div className="h-6 w-20 bg-gray-200 rounded-full animate-pulse" />
+        </td>
+        <td className="px-4 py-4">
+          <div className="w-8 h-8 rounded-md bg-gray-200 animate-pulse" />
+        </td>
+      </tr>
+    </>
+  )
+}
+
 export default function RolesTableSection() {
+  const { data: rolesTableData = [], isLoading, isError } = useRoles()
   const [selected, setSelected] = useState(new Set())
-  const allSelected = selected.size === rolesTableData.length
+  const allSelected = rolesTableData.length > 0 && selected.size === rolesTableData.length
 
   function toggleAll() {
     setSelected(allSelected ? new Set() : new Set(rolesTableData.map((r) => r.id)))
@@ -73,7 +107,6 @@ export default function RolesTableSection() {
 
   return (
     <section className="flex flex-col gap-6">
-      {/* Section header */}
       <div className="flex sm:w-full w-[50%] sm:items-center flex-col sm:flex-row justify-between gap-4">
         <h2 className="text-lg font-medium text-gray-900 leading-[1.56]">User Roles</h2>
         <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 shadow-[0_1px_2px_0_rgba(16,24,40,0.05)] hover:bg-gray-50 transition-colors shrink-0">
@@ -82,7 +115,6 @@ export default function RolesTableSection() {
         </button>
       </div>
 
-      {/* Table */}
       <div className="bg-white border border-gray-200 rounded-md shadow-[0_2px_4px_-2px_rgba(16,24,40,0.06),0_4px_8px_-2px_rgba(16,24,40,0.1)] overflow-x-auto">
         <table className="w-full min-w-160">
           <thead>
@@ -119,7 +151,20 @@ export default function RolesTableSection() {
             </tr>
           </thead>
           <tbody>
-            {rolesTableData.map((row, idx) => (
+            {isLoading && Array.from({ length: 7 }).map((_, i) => <SkeletonRow key={i} />)}
+
+            {isError && (
+              <tr>
+                <td colSpan={6} className="px-6 py-8">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <AlertCircle size={16} className="text-[#F2994A] shrink-0" strokeWidth={1.67} />
+                    <span>Failed to load roles. Please try refreshing the page.</span>
+                  </div>
+                </td>
+              </tr>
+            )}
+
+            {!isLoading && !isError && rolesTableData.map((row, idx) => (
               <>
                 {idx > 0 && (
                   <tr key={`div-${row.id}`}>
